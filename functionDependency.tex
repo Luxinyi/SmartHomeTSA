@@ -1,0 +1,82 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{comment} 
+\usepackage{lipsum}
+\usepackage[left=0.4in,top=0.2in,right=0.4in,bottom=0.2in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs,amsfonts,dsfont} 
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{graphicx}
+\usepackage{float}
+%%\graphicspath{ {/Users/luxinyi/smartHome/data} }
+\usepackage{forest}
+\usepackage[latin1]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{trees}
+
+\begin{document}
+
+\section*{Procedure And Function Dependency Diagram}
+\begin{figure}[H]
+\begin{center}
+\tikzstyle{block} = [rectangle, draw, fill=blue!20, 
+    text width=5em, text centered, rounded corners, minimum height=4em, node    distance=4cm]
+\tikzstyle{every node}=[draw=black,thick,anchor=west, node distance=1cm]
+\tikzstyle{line} = [draw, -latex']
+\begin{tikzpicture}[edge from parent path={(\tikzchildnode.west)}]
+\node [block] (s1) {\textit{Clean Data}};
+\node [block, below of=s1, node distance=3cm] (s2) {\textit{Examine Running Sequence}};
+\node [right of=s2, node distance=3cm] (f2) {getSummary101}; 
+\node [block, below of=s2] (s3) {\textit{Extract Feature (Trend \& Seasonality}};
+\node [right of=s3, node distance=3cm] (f5) {getACF};
+\node [right of=f5, node distance=2cm] (f7) {getSDF};
+\node [below of=f5] (f6) {getPACF};
+\node [below of=f6] (f8) {boxSmooth};
+\node [below of=f8] (f9) {guassSmooth};
+\node [block, below of=s3] (s4) {\textit{Fit ARIMA Model}};
+\node [right of=s4, node distance=3cm]  (f10) {fitARIMA};
+\node [right of=f10, node distance=2cm] (f11) {AR1};
+\node [below of=f11] (f12) {AR2};
+\node [below of=f12] (f13) {ARseasonal};
+\node [below of=f13] (f14) {MA1};
+\node [below of=f14] (f15) {MA2};
+\node [below of=f15] (f16) {MAseasonal};
+\node [below of=f10, node distance=6cm] (f17) {fminsearch};
+\node [right of=f11, node distance=2cm]  (f18) {backshift};
+\node [block, below of=s4, node distance=7cm] (s5) {\textit{Assess Performance}};
+\node [right of=s5, node distance=3cm] (f19) {getR2};
+\node [block, below of=s5, node distance=3cm] (s6) {\textit{Analyze Residuals}};
+\node [right of=s6, node distance=3cm] (f20) {getCI};
+
+\path [line] (s1) -- (s2);
+\path [line] (s2) -- (s3);
+\path [line] (s3) -- (s4);
+\path [line] (s4) -- (s5);
+\path [line] (s5) -- (s6);
+\path [line] (f2) -- (s2);
+\path [line] (f5) -- (s3);
+\path [line] (f6) -| (s3.east);
+\path [line] (f8) -| (s3.east);
+\path [line] (f9) -| (s3.east);
+\path [line] (f7) -- (f5);
+\path [line] (f10) -- (s4);
+\path [line] (f17) -| (s4.east);
+\path [line] (f11) -- (f10);
+\path [line] (f12) -| (f10);
+\path [line] (f13) -| (f10);
+\path [line] (f14) -| (f10);
+\path [line] (f15) -| (f10);
+\path [line] (f16) -| (f10);
+\path [line] (f18) -- (f11);
+\path [line] (f18) |- (f12);
+\path [line] (f18) |- (f13);
+\path [line] (f18) |- (f14);
+\path [line] (f18) |- (f15);
+\path [line] (f18) |- (f16);
+\path [line] (f19) -- (s5);
+\path [line] (f20) -- (s6);
+\end{tikzpicture}
+\end{center}
+\end{figure}
+
+\end{document}
